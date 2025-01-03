@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://unpkg.com/axios@0.25.0/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <title>Document</title>
+    <link rel="stylesheet" th:href= "@{css/index.css}">
+</head>
+<body>
+	<fieldset id="panel">
+		<div class="headerdiv">
+			測試Blog
+			
+			
+		</div>
+		<div id="article" v-for="(item, index) in artiletotal">
+			<h3 >{{item.title}}</h3>
+			<p>{{item.content}}</p>
+		</div>
+	</fieldset>
+	
+	
+</body>
+<script>
+	var app = new Vue({
+		data:{
+			artiletotal:[]
+		},
+		mounted:function(){
+			axios.get('http://localhost:8080/article/query/all').then(
+				res=> {
+					console.log(res.data)
+					this.artiletotal = res.data;
+				}
+			);
+		}
+	});
+
+	app.$mount('#panel');
+</script>
+</html>
