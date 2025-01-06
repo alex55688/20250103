@@ -32,9 +32,6 @@ public class articleService {
 	@Autowired
 	private BlogArticleRepository blogarticleRep;
 	
-	@Autowired
-	private JdbcTemplate jdbcTemplate; 
-	
 	@GetMapping(path = "/query/{id}")
 	public BlogArticle queryById(@PathVariable("id") String no) {
 		 BlogArticle ba = blogarticleRep.findByNo(no);
@@ -75,16 +72,19 @@ public class articleService {
 	@PutMapping(path = "/update")
 	public Message update(@RequestBody BlogArticle blogArticle, HttpServletResponse response) {
 		Message msg = new Message();
-		String sql = "update blog_article set title = ?, content = ? where no = ?";
-		int count = jdbcTemplate.update(sql, blogArticle.getTitle(), blogArticle.getContent(), blogArticle.getNo());
-		if(count >0) {
+		BlogArticle checkNo = blogarticleRep.findByNo(blogArticle.getNo());
+		
+		if(checkNo != null) {
+			blogarticleRep.save(blogArticle);
 			msg.setCode(200);
 			msg.setMsg("更新文章成功");
+			return msg;
 		}else {
 			msg.setCode(400);
 			msg.setMsg("文章更新不到，請確認");
+			return msg;
 		}
-		return msg;
+		
 	}
 	
 }
