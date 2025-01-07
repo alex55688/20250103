@@ -24,7 +24,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 @RequestMapping(path = "/article")
 @RestController
-public class articleService {
+public class ArticleService {
 
 	@Autowired
 	private SQLServerDataSource datasource;
